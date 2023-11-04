@@ -1,0 +1,45 @@
+## Midterm Script
+
+# Clone Google CLoud Platform Github
+- git clone https://github.com/GoogleCLoudPlatform/data-science-on-gcp
+
+# cd data-science-on-gcp
+# cd 02_ingest
+# ./download.sh 2018 1
+# ./download.sh 2018 2
+# ./download.sh 2018 3
+# ./download.sh 2018 4
+# ./download.sh 2018 5
+# ./download.sh 2018 6
+# ./download.sh 2018 7
+# ./download.sh 2018 8
+# ./download.sh 2018 9
+# ./download.sh 2018 10
+# ./download.sh 2018 11
+# ./download.sh 2018 12
+
+Cannot download 2018 8, the errors are shown below indicating that End-of-central-directory signature not found.  Either this file is not a zipfile, or it constitutes one disk of a multi-part archive.
+
+'tanat_navin@cloudshell:~/data-science-on-gcp/02_ingest (chrome-lane-374405)$ ./download.sh 2018 8                                                     
+Downloading YEAR=2018 ...  MONTH=8 ... from https://storage.googleapis.com/data-science-on-gcp/edition2/raw/On_Time_Reporting_Carrier_On_Time_Performance_1987_present
+/tmp/tmp.2esqNrztJG/2018_08.zip
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 29.0M  100 29.0M    0     0  7005k      0  0:00:04  0:00:04 --:--:-- 7005k
+Archive:  /tmp/tmp.2esqNrztJG/2018_08.zip
+  End-of-central-directory signature not found.  Either this file is not
+  a zipfile, or it constitutes one disk of a multi-part archive.  In the
+  latter case the central directory and zipfile comment will be found on
+  the last disk(s) of this archive.
+unzip:  cannot find zipfile directory in one of /tmp/tmp.2esqNrztJG/2018_08.zip or
+        /tmp/tmp.2esqNrztJG/2018_08.zip.zip, and cannot find /tmp/tmp.2esqNrztJG/2018_08.zip.ZIP, period.
+mv: cannot stat '/tmp/tmp.2esqNrztJG/*.csv': No such file or directory'
+
+
+# gsutil -m cp *.csv gs://u6410381/bts/2018
+I use the line above to copy all my csv to the bucket
+
+# bq load --source_format=CSV --autodetect u6410381.bts gs://u6410381/bts/2018/*.csv
+I then use this line to import all my csv files to my Big Query
+
+prl2023q3@gmailcom

@@ -1,0 +1,23 @@
+SELECT
+  date,
+  SUM(new_confirmed) AS new_confirmed,
+  SUM(new_deceased) AS new_deceased,
+  SUM(cumulative_confirmed) AS cumulative_confirmed,
+  SUM(cumulative_deceased) AS cumulative_deceased,
+  SUM(cumulative_tested) AS cumulative_tested,
+  SUM(new_persons_vaccinated) AS total_new_persons_vaccinated,
+  SUM(cumulative_persons_vaccinated) AS total_cumulative_persons_vaccinated,
+  SUM(new_persons_fully_vaccinated) AS total_new_persons_fully_vaccinated,
+  SUM(cumulative_persons_fully_vaccinated) AS total_cumulative_persons_fully_vaccinated,
+  SUM(new_vaccine_doses_administered) AS total_new_vaccine_doses_administered,
+  SUM(cumulative_vaccine_doses_administered) AS total_cumulative_vaccine_doses_administered,
+  SUM(new_recovered) AS total_new_recovered,
+  SUM(cumulative_recovered) AS total_cumulative_recovered
+FROM
+  `bigquery-public-data.covid19_open_data.covid19_open_data`
+WHERE
+  country_name = 'India'
+GROUP BY
+  date
+ORDER BY
+  date desc;

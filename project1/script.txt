@@ -1,0 +1,47 @@
+git clone
+gcloud sql connect u6410381
+show databases;
+source employees.sql
+show databases;
+use employees;
+show tables;
+
+#SQL COMMANDS
+CREATE TABLE joined_employees AS
+SELECT 'emp_no', 'birth_date', 'first_name', 'last_name', 'gender', 'hire_date', 'title', 'titles_from_date', 'titles_to_date',
+       'salary', 'salaries_from_date', 'salaries_to_date', 'dept_name', 'dept_emp_from_date', 'dept_emp_to_date'
+UNION ALL
+SELECT employees.emp_no, employees.birth_date, employees.first_name, employees.last_name, employees.gender, employees.hire_date, 
+       titles.title, titles.from_date AS titles_from_date, titles.to_date AS titles_to_date,
+       salaries.salary, salaries.from_date AS salaries_from_date, salaries.to_date AS salaries_to_date,
+       departments.dept_name, dept_emp.from_date AS dept_emp_from_date, dept_emp.to_date AS dept_emp_to_date
+FROM employees
+JOIN titles ON employees.emp_no = titles.emp_no
+JOIN salaries ON employees.emp_no = salaries.emp_no
+JOIN dept_emp ON employees.emp_no = dept_emp.emp_no
+JOIN departments ON dept_emp.dept_no = departments.dept_no
+LIMIT 10000;
+
+#Check buckets
+gsutil ls gs://thisisbda/employees/
+                                                                                                                                             
+#TEST QUERY
+#1
+SELECT * FROM `bda2023-1.u6410381.employees` LIMIT 5
+
+#2
+SELECT gender, AVG(salary) AS average_salary
+FROM `bda2023-1.u6410381.employees`
+GROUP BY gender;
+
+#3
+WITH ranked_salaries AS (
+  SELECT emp_no, title, salary, 
+         ROW_NUMBER() OVER (PARTITION BY title ORDER BY salary DESC) AS rank
+  FROM `bda2023-1.u6410381.employees`
+)
+SELECT emp_no, title, salary
+FROM ranked_salaries
+WHERE rank = 1;
+
+https://youtu.be/zV2T8jSHWuU
